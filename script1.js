@@ -15,17 +15,22 @@ $.ajax({
 
 function loadSuccess(data){
     var rows = data.split(/\r?\n|\r/);
-    var varJson = {};
-    // var names = rows[0].split(',');
-    for(var i =0;i<=rows.length; i++){
-        if(i===0){
-
-        }else{
-
-        }
+    var listJson = [];
+    var objectJson = {};
+    console.log(rows)
+    for(var i = 1;i<=rows.length; i++){
         var cells = rows[i].split(',');
-        console.log(cells)
+        listJson.push({
+            'Date':cells[0],
+            'Open':cells[1],
+            'High':cells[2],
+            'Low':cells[3],
+            'Close':cells[4],
+            'Adj Close':cells[5],
+            'Volume':cells[6]
+        }) 
     }
-
+    objectJson.listJson = listJson;
+    console.log(JSON.stringify(objectJson));
 }
 
