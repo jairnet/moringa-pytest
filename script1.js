@@ -1,3 +1,4 @@
+  var script1 = document.getElementById('script1');
   // Initialize Firebase
   var config = {
     apiKey: "AIzaSyAbm1pchGfFWXGLnBH3m_ukU4DXOSVEB0I",
@@ -8,29 +9,34 @@
     messagingSenderId: "873399083038"
   };
   firebase.initializeApp(config);
+  var database = firebase.database().ref("moringaData");
 $.ajax({
     url: 'AAPL.csv',
     dataType: 'text',
-}).done(loadSuccess);
+}).done(function(data){
+    var dataAjax = data;
+    script1.onclick = function(event) {
+        loadSuccess(dataAjax);
+    }
+}
+);
 
 function loadSuccess(data){
     var rows = data.split(/\r?\n|\r/);
-    var listJson = [];
     var objectJson = {};
-    console.log(rows)
-    for(var i = 1;i<=rows.length; i++){
+    rows.shift()
+    for(var i = 0;i<rows.length; i++){
         var cells = rows[i].split(',');
-        listJson.push({
-            'Date':cells[0],
-            'Open':cells[1],
-            'High':cells[2],
-            'Low':cells[3],
-            'Close':cells[4],
-            'Adj Close':cells[5],
-            'Volume':cells[6]
-        }) 
+        var objectJson = new Object();
+        objectJson.Date=cells[0],
+        objectJson.Open=cells[1],
+        objectJson.High=cells[2],
+        objectJson.Low=cells[3],
+        objectJson.Close=cells[4],
+        objectJson.AdjClose=cells[5],
+        objectJson.Volume=cells[6]
+        database.push(objectJson);
     }
-    objectJson.listJson = listJson;
-    console.log(JSON.stringify(objectJson));
+    alert('Data Success!');
 }
 
